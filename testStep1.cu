@@ -167,7 +167,8 @@ cudaEventElapsedTime(&t3, stopWork, stopCopyFrom);
 
         //cout<<"Threads: "<< numbOfBlock*numbOfThread <<"\tTime: "<<t2<<endl;
         Results.insert(pair<int,float>(numbOfBlock*numbOfThread,t2));
-   
+	numbOfThread++;
+}   
 
 map<int,float>::iterator it;
 ofstream fout("g1.txt");
@@ -181,7 +182,7 @@ ofstream fout("g1.txt");
 //cout << "Время копирования на GPU: \t" << t1 << endl;
 //cout << "Время выполенния: \t\t" << t2 << endl;
 //cout << "Время копирования с GPU: \t"  << t3 << endl;
-}
+
         return 0;
 }
 
