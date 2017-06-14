@@ -56,12 +56,12 @@ int main(int argc, char* argv[]){
 
         int numbOfBlock = 1;
         int numbOfThread = 1;
-        for (int i = 0; i < columns; i++ )
+        for (int i = 0; i < 700; i++ )
         {
-			if (i&1)
+		/*	if (i&1)
 				numbOfThread++;
 			else
-				numbOfBlock++;
+				numbOfBlock++;*/
                 //for(int numbOfThread = 1; numbOfThread <= columns; numbOfThread++){
                 //if(columns % numbOfBlock == 0){
                         //numbOfThread = 1;
@@ -138,9 +138,9 @@ cudaEventRecord(start);
                                                                                 columns,
                                                                                 rows,
                                                                                 y,
-                                        (rows * columns)/(numbOfBlock*numbOfThread));
+                                        (columns)/(numbOfBlock*numbOfThread));
 
-
+cudaDeviceSynchronize();
 cudaEventRecord(stopWork);
 
 cudaMemcpy(dataH, dataDevice, (rows * columns) * sizeof(int), cudaMemcpyDeviceToHost);
@@ -148,12 +148,12 @@ cudaMemcpy(resH, resDevice, (columns) * sizeof(int), cudaMemcpyDeviceToHost);
 
 cudaEventRecord(stopCopyFrom);
 //cout << "Result vector:  ";
-//        for (int i=0; i<5; i++)
-//        {
-//                cout << resH[i] << " ";
-//        }
-//
-//      cout<<'\t';
+  //      for (int i=0; i<5; i++)
+    //    {
+      //          cout << resH[i] << " ";
+       // }
+
+     // cout<<'\t';
 
 
         for(int i = 0; i < columns; i++){
@@ -165,12 +165,12 @@ cudaEventElapsedTime(&t1, start, stopCopyTo);
 cudaEventElapsedTime(&t2, stopCopyTo, stopWork);
 cudaEventElapsedTime(&t3, stopWork, stopCopyFrom);
 
-        //cout<<"Threads: "<< numbOfBlock*numbOfThread <<"\tTime: "<<t2<<endl;
+        cout<<"All: "<< numbOfBlock*numbOfThread<<"\tBlocks: "<<numbOfBlock<< "\tThreads: "<<numbOfThread <<"\tTime: "<<t2<<endl;
         Results.insert(pair<int,float>(numbOfBlock*numbOfThread,t2));
-        
+        numbOfThread++;
 }
 map<int,float>::iterator it;
-ofstream fout("tt.txt");
+ofstream fout("g.txt");
   for (it = Results.begin(); it != Results.end(); ++it)///вывод на экран
   {
      fout << it->first << ' ' << it->second << endl;

@@ -56,12 +56,12 @@ int main(int argc, char* argv[]){
 
         int numbOfBlock = 1;
         int numbOfThread = 1;
-        for (int i = 0; i < columns; i++ )
+        for (int i = 0; i < 700; i++ )
         {
-			if (i&1)
+			/*if (i&1)
 				numbOfThread++;
 			else
-				numbOfBlock++;
+				numbOfBlock++;*/
                 //for(int numbOfThread = 1; numbOfThread <= columns; numbOfThread++){
                 //if(columns % numbOfBlock == 0){
                         //numbOfThread = 1;
@@ -139,7 +139,7 @@ cudaEventRecord(start);
                                                                                 columns,
                                                                                 rows,
                                                                                 y,
-                                        (rows * columns)/(numbOfBlock*numbOfThread));
+                                        (columns)/(numbOfBlock*numbOfThread));
 
 
 cudaEventRecord(stopWork);
@@ -147,14 +147,14 @@ cudaEventRecord(stopWork);
 cudaMemcpy(dataH, dataDevice, (rows * columns) * sizeof(int), cudaMemcpyDeviceToHost);
 cudaMemcpy(resH, resDevice, (columns) * sizeof(int), cudaMemcpyDeviceToHost);
 
-cudaEventRecord(stopCopyFrom);
+cudaEventRecord(stopCopyFrom);/*
 cout << "Result vector:  ";
         for (int i=0; i<20; i++)
         {
                 cout << resH[i] << " ";
         }
 
-      cout<<'\t';
+      cout<<'\t';*/
 
 
         for(int i = 0; i < columns; i++){
@@ -168,10 +168,10 @@ cudaEventElapsedTime(&t3, stopWork, stopCopyFrom);
 
         //cout<<"Threads: "<< numbOfBlock*numbOfThread <<"\tTime: "<<t2<<endl;
         Results.insert(pair<int,float>(numbOfBlock*numbOfThread,t2));
-   
-}
+   	numbOfThread++;
+
 map<int,float>::iterator it;
-ofstream fout("tt2.txt");
+ofstream fout("g2.txt");
   for (it = Results.begin(); it != Results.end(); ++it)///вывод на экран
   {
      fout << it->first << ' ' << it->second << endl;
@@ -182,7 +182,7 @@ ofstream fout("tt2.txt");
 //cout << "Время копирования на GPU: \t" << t1 << endl;
 //cout << "Время выполенния: \t\t" << t2 << endl;
 //cout << "Время копирования с GPU: \t"  << t3 << endl;
-
+}
         return 0;
 }
 
